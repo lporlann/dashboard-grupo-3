@@ -1,12 +1,10 @@
 import React from 'react';
-
 import ReactDOM from 'react-dom';
-import './assets/css/app.css';
 import App from './components/App';
+import './assets/css/app.css';
 
 
-let root = document.getElementById('wrapper');
+let root = document.getElementById('wrapper')
 
 
-ReactDOM.render(<App /> , root)
-
+ReactDOM.render(<App />, root);
