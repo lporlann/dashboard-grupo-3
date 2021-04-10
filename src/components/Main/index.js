@@ -11,43 +11,60 @@ import dummy from './assets/images/product_dummy.svg';
 
 
 const Main = () => {
-	const [productos, setProductos] = useState(0)
-	const [usuarios, setUsuarios] = useState(0)
-	const [categorias, setCategorias] = useState(0)
-	const [data, setData] = useState([])
+	const [productosCount, setProductosCount] = useState(0)
+	const [usuariosCount, setUsuariosCount] = useState(0)
+	const [categoriasCount, setCategoriasCount] = useState(0)
+	const [productos, setProductos] = useState([])
+	const [productPage, setProductPage] = useState([])
 	
+	// productsCount
 	useEffect(() => {
 		fetch('http://localhost:3001/api/products/list')
-			.then(res => res.json())
-			.then(productos => {
-				setProductos(productos.meta.count)
-			})
-			.catch((e) => {
-				console.log(e);
-			})
-	}, [productos])
+		.then(res => res.json())
+		.then(productosCount => {
+			setProductosCount(productosCount.meta.count)
+		})
+		.catch((e) => {
+			console.log(e);
+		})
+	}, [productosCount])
 	
+	// usersCount
 	useEffect(() => {
 		fetch('http://localhost:3001/api/users/')
-			.then(res => res.json())
-			.then(usuarios => {
-				setUsuarios(usuarios.meta.count)
-			})
-			.catch((e) => {
-				console.log(e);
-			})
-	}, [productos])
+		.then(res => res.json())
+		.then(usuariosCount => {
+			setUsuariosCount(usuariosCount.meta.count)
+		})
+		.catch((e) => {
+			console.log(e);
+		})
+	}, [usuariosCount])
 	
+	// categoriesCount
 	useEffect(() => {
 		fetch('http://localhost:3001/api/products/categories')
-			.then(res => res.json())
-			.then(categorias => {
-				setCategorias(categorias.meta.count)
-			})
-			.catch((e) => {
-				console.log(e);
-			})
-	}, [productos])
+		.then(res => res.json())
+		.then(categoriasCount => {
+			setCategoriasCount(categoriasCount.meta.count)
+		})
+		.catch((e) => {
+			console.log(e);
+		})
+	}, [categoriasCount])
+	
+	// products
+	useEffect(() => {
+		fetch('http://localhost:3001/api/products/list')
+		.then(res => res.json())
+		.then(productos => {
+			setProductos(productos.data.products)
+			setProductPage([productos.meta.previous, productos.meta.next])
+		})
+		.catch((e) => {
+			console.log(e);
+		})
+	}, [productos, productPage])
 
 		return (
 			<div id="content-wrapper" className="d-flex flex-column">
@@ -59,9 +76,9 @@ const Main = () => {
 					<div className="container-fluid">
 						<Metrics 
 							title="Motorbike Zone Metrics"
-							productos= {productos}
-							usuarios= {usuarios}
-							categorias= {categorias}
+							productosCount= {productosCount}
+							usuariosCount= {usuariosCount}
+							categoriasCount= {categoriasCount}
 
 						/>
 						<div className="row">
@@ -92,8 +109,10 @@ const Main = () => {
 							
 						</div>
 						<Table 
-							data={data}
+							productos={productos}
+							productPage={productPage}
 						/>
+
 					</div>
 				</div>
 	

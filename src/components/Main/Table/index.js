@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Table = ({data}) => {
+const Table = ({productos,productPage}) => {
+	
     return (
         <>
             <h1 className="h3 mb-2 text-gray-800">All the products in the Database</h1>
@@ -11,61 +12,28 @@ const Table = ({data}) => {
 							<thead>
 								<tr>
 									<th>ID</th>
-									<th>Titulo</th>
-									<th>texto</th>
+									<th>Nombre</th>
+									<th>Descripción</th>
+									<th>Marca</th>
+									<th>Link</th>
 								</tr>
 							</thead>
 							<tbody>
 								{
-									data.map((nota, i) => (
-										<tr key={i}>
-											<td>{nota.id}</td>
-											<td>{nota.titulo}</td>
-											<td>{nota.texto}</td>
+									productos.map((producto) => (
+										<tr key={producto.id}>
+											<td>{producto.id}</td>
+											<td>{producto.name}</td>
+											<td>{producto.description}</td>
+											<td>{producto.brand}</td>
+											<td>{producto.detail}</td>
 										</tr>
 									))
 								}
-								<tr>
-									<td>Tiger Nixon</td>
-									<td>System Architect</td>
-									<td>$320,800</td>
-									<td>
-										<ul>
-											<li>Category 01</li>
-											<li>Category 02</li>
-											<li>Category 03</li>
-										</ul>
-									</td>
-									<td>
-										<ul>
-											<li><span className="text-danger">Red</span></li>
-											<li><span className="text-primary">Blue</span></li>
-											<li><span className="text-success">Green</span></li>
-										</ul>
-									</td>
-									<td>245</td>
-								</tr>
-								<tr>
-									<td>Jane Doe</td>
-									<td>Fullstack developer</td>
-									<td>$320,800</td>
-									<td>
-										<ul>
-											<li>Category 01</li>
-											<li>Category 02</li>
-											<li>Category 03</li>
-										</ul>
-									</td>
-									<td>
-										<ul>
-											<li><span className="text-danger">Red</span></li>
-											<li><span className="text-primary">Blue</span></li>
-											<li><span className="text-success">Green</span></li>
-										</ul>
-									</td>
-									<td>245</td>
-								</tr>
+								
 							</tbody>
+							<a href={productPage[0]}>Previous</a>
+							<a href={productPage[1]}>Next</a>
 						</table>
 					</div>
 				</div>
