@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import Card from './Card';
 import Category from './Category';
 import Footer from './Footer';
@@ -10,41 +10,45 @@ import Metrics from './Metrics';
 import dummy from './assets/images/product_dummy.svg';
 
 
-class Main extends Component {
-	constructor () {
-		super();
-		this.state = {
-			total: {
-				productos: 0,
-				categorias: 0,
-				usuarios: 0
-			},
-			data: []
-		}
-	}
-
-	componentDidMount () {
-		console.log('Me acabo de renderizar');
-		fetch('http://localhost:3001/api/all')
+const Main = () => {
+	const [productos, setProductos] = useState(0)
+	const [usuarios, setUsuarios] = useState(0)
+	const [categorias, setCategorias] = useState(0)
+	const [data, setData] = useState([])
+	
+	useEffect(() => {
+		fetch('http://localhost:3001/api/products/list')
 			.then(res => res.json())
-			.then(notas => {
-				this.setState({
-					total: notas.total,
-					data: notas.data
-				})
+			.then(productos => {
+				setProductos(productos.meta.count)
 			})
 			.catch((e) => {
 				console.log(e);
 			})
-	}
-	componentDidUpdate () {
-		console.log('Me acabo de actualizar');
-	}
+	}, [productos])
+	
+	useEffect(() => {
+		fetch('http://localhost:3001/api/users/')
+			.then(res => res.json())
+			.then(usuarios => {
+				setUsuarios(usuarios.meta.count)
+			})
+			.catch((e) => {
+				console.log(e);
+			})
+	}, [productos])
+	
+	useEffect(() => {
+		fetch('http://localhost:3001/api/products/categories')
+			.then(res => res.json())
+			.then(categorias => {
+				setCategorias(categorias.meta.count)
+			})
+			.catch((e) => {
+				console.log(e);
+			})
+	}, [productos])
 
-
-
-
-    render () {
 		return (
 			<div id="content-wrapper" className="d-flex flex-column">
 	
@@ -55,7 +59,9 @@ class Main extends Component {
 					<div className="container-fluid">
 						<Metrics 
 							title="Motorbike Zone Metrics"
-							total={this.state.total}
+							productos= {productos}
+							usuarios= {usuarios}
+							categorias= {categorias}
 
 						/>
 						<div className="row">
@@ -86,7 +92,7 @@ class Main extends Component {
 							
 						</div>
 						<Table 
-							data={this.state.data}
+							data={data}
 						/>
 					</div>
 				</div>
@@ -95,7 +101,6 @@ class Main extends Component {
 	
 			</div>
 		);
-	}
 }
 
 export default Main;
