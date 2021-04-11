@@ -16,10 +16,11 @@ const Main = () => {
 	const [categoriasCount, setCategoriasCount] = useState(0)
 	const [productos, setProductos] = useState([])
 	const [productPage, setProductPage] = useState([])
+	const [url, setUrl] = useState('http://localhost:3001/api/products/list')
 	
 	// productsCount
 	useEffect(() => {
-		fetch('http://localhost:3001/api/products/list')
+		fetch(url)
 		.then(res => res.json())
 		.then(productosCount => {
 			setProductosCount(productosCount.meta.count)
@@ -27,7 +28,7 @@ const Main = () => {
 		.catch((e) => {
 			console.log(e);
 		})
-	}, [productosCount])
+	}, [])
 	
 	// usersCount
 	useEffect(() => {
@@ -39,7 +40,7 @@ const Main = () => {
 		.catch((e) => {
 			console.log(e);
 		})
-	}, [usuariosCount])
+	}, [])
 	
 	// categoriesCount
 	useEffect(() => {
@@ -51,11 +52,11 @@ const Main = () => {
 		.catch((e) => {
 			console.log(e);
 		})
-	}, [categoriasCount])
+	}, [])
 	
 	// products
 	useEffect(() => {
-		fetch('http://localhost:3001/api/products/list')
+		fetch(url)
 		.then(res => res.json())
 		.then(productos => {
 			setProductos(productos.data.products)
@@ -64,8 +65,14 @@ const Main = () => {
 		.catch((e) => {
 			console.log(e);
 		})
-	}, [productos, productPage])
+	}, [url])
 
+	let previous
+	if(productPage[0]=="") {
+		previous = ""
+	} else {
+		previous = "style={display:none}"
+	}
 		return (
 			<div id="content-wrapper" className="d-flex flex-column">
 	
@@ -111,7 +118,11 @@ const Main = () => {
 						<Table 
 							productos={productos}
 							productPage={productPage}
-						/>
+							>
+							{productPage[0] != "" && <button onClick={()=> setUrl(productPage[0])}>Previous</button>}
+							{productPage[1] != "" && <button onClick={()=> setUrl(productPage[1])}>Next</button>}
+							</Table>
+						
 
 					</div>
 				</div>
