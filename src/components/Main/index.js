@@ -12,6 +12,7 @@ import dummy from './assets/images/product_dummy.svg';
 
 
 const Main = () => {
+	
 	const [productosCount, setProductosCount] = useState(0)
 	const [usuariosCount, setUsuariosCount] = useState(0)
 	const [categoriasCount, setCategoriasCount] = useState(0)
@@ -69,7 +70,7 @@ const Main = () => {
 	}, [url])
 
 	let previous
-	if(productPage[0]=="") {
+	if(productPage[0]==="") {
 		previous = ""
 	} else {
 		previous = "style={display:none}"
@@ -121,8 +122,8 @@ const Main = () => {
 							productPage={productPage}
 							>
 							<div className="tableButtons">
-							{productPage[0] != "" && <button className="tableButton" onClick={()=> setUrl(productPage[0])}>Previous</button>}
-							{productPage[1] != "" && <button className="tableButton" onClick={()=> setUrl(productPage[1])}>Next</button>}
+							{productPage[0] !== "" && <button className="tableButton" onClick={()=> setUrl(productPage[0])}>Previous</button>}
+							{productPage[1] !== "" && <button className="tableButton" onClick={()=> setUrl(productPage[1])}>Next</button>}
 							</div>
 							</Table>
 						
@@ -135,5 +136,5 @@ const Main = () => {
 			</div>
 		);
 }
+export default  Main;
 
-export default Main;
