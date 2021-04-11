@@ -7,7 +7,7 @@ const Link = ({classIcon, title, active, url}) => {
 
     return (
         <li className={classItem}>
-			<a className="nav-link collapsed" href={url}>
+			<a className="nav-link collapsed" href={url} target="blanck">
 				<i className={classIcon}></i>
 				<span>{title}</span>
 			</a>
