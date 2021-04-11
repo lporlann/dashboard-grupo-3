@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Table = ({productos,productPage}) => {
+const Table = (props) => {
 	
     return (
         <>
@@ -15,25 +15,21 @@ const Table = ({productos,productPage}) => {
 									<th>Nombre</th>
 									<th>Descripción</th>
 									<th>Marca</th>
-									<th>Link</th>
 								</tr>
 							</thead>
 							<tbody>
 								{
-									productos.map((producto) => (
+									props.productos.map((producto) => (
 										<tr key={producto.id}>
 											<td>{producto.id}</td>
-											<td>{producto.name}</td>
+											<td> <a href={producto.detail} target="blanck">{producto.name}</a></td>
 											<td>{producto.description}</td>
 											<td>{producto.brand}</td>
-											<td>{producto.detail}</td>
 										</tr>
 									))
 								}
-								
 							</tbody>
-							<a href={productPage[0]}>Previous</a>
-							<a href={productPage[1]}>Next</a>
+							{props.children}
 						</table>
 					</div>
 				</div>
