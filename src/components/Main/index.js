@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Table from './Table';
 import Header from './Header';
 import Metrics from './Metrics';
+import './Main.css'
 
 /* Assets */
 import dummy from './assets/images/product_dummy.svg';
@@ -119,11 +120,13 @@ const Main = () => {
 							productos={productos}
 							productPage={productPage}
 							>
-							{productPage[0] != "" && <button onClick={()=> setUrl(productPage[0])}>Previous</button>}
-							{productPage[1] != "" && <button onClick={()=> setUrl(productPage[1])}>Next</button>}
+							<div className="tableButtons">
+							{productPage[0] != "" && <button className="tableButton" onClick={()=> setUrl(productPage[0])}>Previous</button>}
+							{productPage[1] != "" && <button className="tableButton" onClick={()=> setUrl(productPage[1])}>Next</button>}
+							</div>
 							</Table>
 						
-
+							
 					</div>
 				</div>
 	
