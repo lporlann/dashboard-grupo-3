@@ -16,18 +16,26 @@ const Main = () => {
 	const [productosCount, setProductosCount] = useState(0)
 	const [usuariosCount, setUsuariosCount] = useState(0)
 	const [categoriasCount, setCategoriasCount] = useState(0)
-	const [productos, setProductos] = useState([])
-	const [productPage, setProductPage] = useState([])
-	const [url, setUrl] = useState('http://localhost:3001/api/products/list')
+	
 	const [categorias, setCategorias] = useState([])
 	const [lastproduct, setLastproduct] = useState({})
 	
 	// productsCount
 	useEffect(() => {
-		fetch(url)
+		fetch("http://localhost:3001/api/products/list")
 		.then(res => res.json())
-		.then(productosCount => {
-			setProductosCount(productosCount.meta.count)
+		.then(productos => {
+			setProductosCount(productos.meta.count)
+			let categoriasArray = Object.entries(productos.meta.countByCategory)
+			setCategorias(categoriasArray)
+			let lastProductId = productos.data.products[0].id
+			fetch('http://localhost:3001/api/products/' + lastProductId)
+			.then(result =>
+				result.json()
+			)
+			.then(product => {
+				setLastproduct(product)
+			})
 		})
 		.catch((e) => {
 			console.log(e);
@@ -57,50 +65,7 @@ const Main = () => {
 			console.log(e);
 		})
 	}, [])
-	
-	// products
-	useEffect(() => {
-		fetch(url)
-		.then(res => res.json())
-		.then(productos => {
-			setProductos(productos.data.products)
-			setProductPage([productos.meta.previous, productos.meta.next])
-			let categoriasArray = Object.entries(productos.meta.countByCategory)
 			
-			setCategorias(categoriasArray)
-		})
-		.catch((e) => {
-			console.log(e);
-		})
-	}, [url])
-	//last product
-	useEffect(() => {
-		fetch('http://localhost:3001/api/products/list')
-		.then(result => result.json())
-		.then(productos =>{
-			let lastProductId = productos.data.products[0].id
-			fetch('http://localhost:3001/api/products/' + lastProductId)
-			.then(result =>
-				result.json()
-			)
-			.then(product => {
-				setLastproduct(product)
-				console.log(lastproduct)
-				console.log(lastProductId)
-			})
-			
-		})
-	}, [])	
-			
-		
-	
-
-	let previous
-	if(productPage[0]==="") {
-		previous = ""
-	} else {
-		previous = "style={display:none}"
-	}
 		return (
 			<div id="content-wrapper" className="d-flex flex-column">
 	
@@ -122,11 +87,12 @@ const Main = () => {
 							<Card
 								title="Last product in Data Dase"
 							>
-								<div className="text-center">
-									<img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{width: "25rem"}} src={dummy} alt="dummy" />
+								{/* <div className="text-center">
+									<img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{width: "25rem"}} src={lastproduct.data.colors[0].Images.image} alt="dummy" />
 								</div>
+								<h3>{lastproduct.data.name}</h3>
 								<p>{lastproduct.data.description}</p>
-								<a target="_blank" rel="nofollow" href="/">View product detail</a>
+								<a target="_blank" rel="nofollow" href={lastproduct.meta.urlDetail}>View product detail</a> */}
 							</Card>
 	
 							<Card 
@@ -134,30 +100,13 @@ const Main = () => {
 							>
 								<div className="row">
 									{categorias.map(categoria =>(
-										
-										
 										<Category nombre={categoria[0]} cantidad={categoria[1]}/>
 									))}		
 								</div>	
-										
 							</Card>			
-											
-										
-									
-									
-								
-							
-							
 						</div>
-						<Table 
-							productos={productos}
-							productPage={productPage}
-							>
-							<div className="tableButtons">
-							{productPage[0] !== "" && <button className="tableButton" onClick={()=> setUrl(productPage[0])}>Previous</button>}
-							{productPage[1] !== "" && <button className="tableButton" onClick={()=> setUrl(productPage[1])}>Next</button>}
-							</div>
-							</Table>
+						<Table />
+							
 						
 							
 					</div>
