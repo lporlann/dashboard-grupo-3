@@ -19,6 +19,8 @@ const Main = () => {
 	const [productos, setProductos] = useState([])
 	const [productPage, setProductPage] = useState([])
 	const [url, setUrl] = useState('http://localhost:3001/api/products/list')
+	const [categorias, setCategorias] = useState([])
+	const [lastproduct, setLastproduct] = useState({})
 	
 	// productsCount
 	useEffect(() => {
@@ -63,11 +65,35 @@ const Main = () => {
 		.then(productos => {
 			setProductos(productos.data.products)
 			setProductPage([productos.meta.previous, productos.meta.next])
+			let categoriasArray = Object.entries(productos.meta.countByCategory)
+			
+			setCategorias(categoriasArray)
 		})
 		.catch((e) => {
 			console.log(e);
 		})
 	}, [url])
+	//last product
+	useEffect(() => {
+		fetch('http://localhost:3001/api/products/list')
+		.then(result => result.json())
+		.then(productos =>{
+			let lastProductId = productos.data.products[0].id
+			fetch('http://localhost:3001/api/products/' + lastProductId)
+			.then(result =>
+				result.json()
+			)
+			.then(product => {
+				setLastproduct(product)
+				console.log(lastproduct)
+				console.log(lastProductId)
+			})
+			
+		})
+	}, [])	
+			
+		
+	
 
 	let previous
 	if(productPage[0]==="") {
@@ -99,7 +125,7 @@ const Main = () => {
 								<div className="text-center">
 									<img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{width: "25rem"}} src={dummy} alt="dummy" />
 								</div>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, consequatur explicabo officia inventore libero veritatis iure voluptate reiciendis a magnam, vitae, aperiam voluptatum non corporis quae dolorem culpa exercitationem ratione?</p>
+								<p>{lastproduct.data.description}</p>
 								<a target="_blank" rel="nofollow" href="/">View product detail</a>
 							</Card>
 	
@@ -107,14 +133,20 @@ const Main = () => {
 								title="Categories in Data Base"
 							>
 								<div className="row">
-									<Category />
-									<Category />
-									<Category />
-									<Category />
-									<Category />
-									<Category />
-								</div>
-							</Card>
+									{categorias.map(categoria =>(
+										
+										
+										<Category nombre={categoria[0]} cantidad={categoria[1]}/>
+									))}		
+								</div>	
+										
+							</Card>			
+											
+										
+									
+									
+								
+							
 							
 						</div>
 						<Table 
