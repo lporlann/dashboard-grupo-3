@@ -28,14 +28,8 @@ const Main = () => {
 			setProductosCount(productos.meta.count)
 			let categoriasArray = Object.entries(productos.meta.countByCategory)
 			setCategorias(categoriasArray)
-			let lastProductId = productos.data.products[0].id
-			fetch('http://localhost:3001/api/products/' + lastProductId)
-			.then(result =>
-				result.json()
-			)
-			.then(product => {
-				setLastproduct(product)
-			})
+			setLastproduct(productos.data.products[0])
+			
 		})
 		.catch((e) => {
 			console.log(e);
@@ -87,12 +81,12 @@ const Main = () => {
 							<Card
 								title="Last product in Data Dase"
 							>
-								{/* <div className="text-center">
-									<img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{width: "25rem"}} src={lastproduct.data.colors[0].Images.image} alt="dummy" />
+								 <div className="text-center">
+									<img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{width: "25rem"}} src={lastproduct.image} alt="dummy" />
 								</div>
-								<h3>{lastproduct.data.name}</h3>
-								<p>{lastproduct.data.description}</p>
-								<a target="_blank" rel="nofollow" href={lastproduct.meta.urlDetail}>View product detail</a> */}
+								<h3>{lastproduct.name}</h3>
+								<p>{lastproduct.description}</p>
+								<a target="_blank" rel="nofollow" href={lastproduct.detail}>View product detail</a>
 							</Card>
 	
 							<Card 
