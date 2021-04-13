@@ -1,6 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 const Table = (props) => {
+	
+	const [url, setUrl] = useState('http://localhost:3001/api/products/list')
+	const [productos, setProductos] = useState([])
+	const [productPage, setProductPage] = useState([])
+
+	useEffect(() => {
+		fetch(url)
+		.then(res => res.json())
+		.then(productos => {
+			setProductos(productos.data.products)
+			setProductPage([productos.meta.previous, productos.meta.next])
+			
+		})
+		.catch((e) => {
+			console.log(e);
+		})
+	}, [url])
 	
     return (
         <>
@@ -19,7 +36,7 @@ const Table = (props) => {
 							</thead>
 							<tbody>
 								{
-									props.productos.map((producto) => (
+									productos.map((producto) => (
 										<tr key={producto.id}>
 											<td>{producto.id}</td>
 											<td> <a href={producto.detail} target="blanck">{producto.name}</a></td>
@@ -31,7 +48,10 @@ const Table = (props) => {
 							</tbody>
 							
 						</table>
-						{props.children}
+						<div className="tableButtons">
+							{productPage[0] !== "" && <button className="tableButton" onClick={()=> setUrl(productPage[0])}>Previous</button>}
+							{productPage[1] !== "" && <button className="tableButton" onClick={()=> setUrl(productPage[1])}>Next</button>}
+							</div>
 					</div>
 				</div>
 			</div>
